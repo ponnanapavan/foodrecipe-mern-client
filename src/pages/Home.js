@@ -40,7 +40,7 @@ const Home = () => {
       const response = await axios.put(`${BASE_URL}/recipes`, { recipeID, userID }, {
         headers: { authorization: cookies.access_token }
       });
-         console.log(response)
+      console.log(response)
       setSavedRecipes(response.data.savedRecipes);
     } catch (err) {
       console.error(err);
@@ -71,12 +71,23 @@ const Home = () => {
               <p>Cooking Time: {recipe.cookingTime} minutes</p>
             </div>
             <div className="p-6 w-full flex justify-between items-center">
-              <button onClick={() => handleSave(recipe._id)} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:bg-blue-600" disabled={alreadysave(recipe._id)}>
-                {alreadysave(recipe._id) ? "saved" : "save"}
-              </button>
-              <Link to={`/getdata/${recipe._id}`}><button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                View Recipe
-              </button></Link>
+              {cookies.access_token && (
+                <>
+                  <button
+                    onClick={() => handleSave(recipe._id)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                    disabled={alreadysave(recipe._id)}
+                  >
+                    {alreadysave(recipe._id) ? "Saved" : "Save"}
+                  </button>
+
+                  <Link to={`/getdata/${recipe._id}`}>
+                    <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                      View Recipe
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         ))}
